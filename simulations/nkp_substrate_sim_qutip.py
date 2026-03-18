@@ -63,6 +63,7 @@ matplotlib.use(“Agg”)
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from datetime import datetime
+from scipy.optimize import curve_fit   # for lifetime fitting
 
 # ─────────────────────────────────────────────
 
@@ -150,6 +151,32 @@ return cmap
 
 # ─────────────────────────────────────────────
 
+# Key verification metrics (auto-computed)
+
+# ─────────────────────────────────────────────
+
+def fit_excitation_lifetime(C_vals, times):
+“”“C(t) = C0 * exp(-t/tau) -> returns tau (excitation lifetime)”””
+def exp_decay(t, C0, tau):
+return C0 * np.exp(-t / tau)
+try:
+popt, _ = curve_fit(exp_decay, times, C_vals,
+p0=[C_vals[0], 5.0],
+bounds=(0, [np.inf, np.inf]))
+return popt[1]
+except Exception:
+return np.nan
+
+def extract_energy_gap(H):
+“”“Smallest positive eigenvalue gap Delta of the Hamiltonian.”””
+evals = H.eigenenergies()
+sorted_e = np.sort(evals)
+gaps = np.diff(sorted_e)
+positive_gaps = gaps[gaps > 1e-10]
+return float(np.min(positive_gaps)) if len(positive_gaps) > 0 else np.nan
+
+# ─────────────────────────────────────────────
+
 # Collapse operators (substrate-modulated)
 
 # ─────────────────────────────────────────────
@@ -215,6 +242,7 @@ return {
     "final_mag": domain_wall_density(final_rho, N),
     "coh_map": coherence_map(states, N),
     "final_rho": final_rho, "substrate_coupling": substrate_coupling,
+    "H": H,                     # for auto Delta extraction
 }
 ```
 
@@ -320,6 +348,17 @@ res_sub = run_simulation_qutip(N=N, steps=STEPS, dt=DT, J0=J0, alpha=ALPHA,
 res_ctl = run_simulation_qutip(N=N, steps=STEPS, dt=DT, J0=J0, alpha=ALPHA,
                                h=H_FIELD, gamma_base=GAMMA_BASE,
                                substrate_coupling=False, label="Control (local)")
+
+# ── Auto-computed verification metrics ──────────────────────────────────
+tau_sub   = fit_excitation_lifetime(res_sub["C_vals"], res_sub["tlist"])
+tau_ctl   = fit_excitation_lifetime(res_ctl["C_vals"], res_ctl["tlist"])
+delta_sub = extract_energy_gap(res_sub["H"])
+delta_ctl = extract_energy_gap(res_ctl["H"])
+
+print(f"\nVerification metrics (match README and OSF pre-registration):")
+print(f"  \u03c4_sub = {tau_sub:.4f}  |  \u03c4_ctl = {tau_ctl:.4f}  (~{tau_sub/tau_ctl:.1f}\u00d7)")
+print(f"  \u0394_sub = {delta_sub:.4f}  |  \u0394_ctl = {delta_ctl:.4f}  ({delta_sub/delta_ctl:.1f}\u00d7 gap)")
+# ────────────────────────────────────────────────────────────────────────
 
 coh_diff  = res_sub["C_vals"][-1] - res_ctl["C_vals"][-1]
 leak_diff = res_ctl["L_vals"].mean() - res_sub["L_vals"].mean()
