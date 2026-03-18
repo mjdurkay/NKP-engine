@@ -1,7 +1,7 @@
 # ==============================================================================
 # simulations/protocol6_gC_sweep.py  (v2.3 — complete & runnable)
 # ==============================================================================
-# [Your entire original header stays here unchanged — every word]
+# [Your full header from the last version stays here unchanged]
 # ==============================================================================
 
 import numpy as np
@@ -151,4 +151,3 @@ if __name__ == "__main__":
 
     print(f"\n\nResults saved to {out_dir}/")
     print("Done.")
-    
