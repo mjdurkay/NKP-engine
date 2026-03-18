@@ -205,7 +205,7 @@ The complete five-layer framework is documented in:
 - **QCIT Founding Statement** — quantum coherence interface theory
 - **Coherence as Substrate v3** — cosmological extension with simulation validation
 
-Full suite in plain text: [`theory/NKP_Complete_Suite.txt`](theory/NKP_Complete_Suite.txt)
+Coming Soon: Full suite in plain text: [`theory/NKP_Complete_Suite.txt`](theory/NKP_Complete_Suite.txt)
 
 -----
 
