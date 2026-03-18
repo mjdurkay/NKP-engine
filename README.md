@@ -8,7 +8,7 @@
 **Contact:** mjdurkay@gmail.com | [@SpiritOfTruth64](https://x.com/SpiritOfTruth64)  
 **License:** MIT  
 **Status:** Active Development  
-**OSF Pre-Registration:** March 17, 2026 (Protocol 6)
+**OSF Pre-Registration:** March 18, 2026 (Protocol 6, embargoed until March 18, 2027)
 
 -----
 
@@ -71,10 +71,10 @@ All simulations use: **N=8, J0=1.0, α=0.3, h=0.5, γ=0.05, 120 timesteps.**
 These structural results hold across QuTiP, numpy/scipy, RK4, multiple noise models, different seeds, different N, and independent platforms:
 
 1. Global coupling **always** increases coherence lifetime
-1. Global coupling **always** reduces leakage
-1. Global coupling **always** opens a larger spectral gap
-1. Global coupling **always** produces spatial coherence structure
-1. Local-only control **never** produces stable excitations
+2. Global coupling **always** reduces leakage
+3. Global coupling **always** opens a larger spectral gap
+4. Global coupling **always** produces spatial coherence structure
+5. Local-only control **never** produces stable excitations
 
 > *Change the details — the behavior stays the same. That is the hallmark of a real physical principle.*
 
@@ -90,150 +90,3 @@ python simulations/nkp_substrate_sim_qutip.py
 
 # Fluctuation breaking point sweep
 python simulations/nkp_fluctuation_sweep_qutip.py
-```
-
------
-
-## Protocol 6 — The Falsifiable Experiment
-
-**Pre-registered March 17, 2026 on OSF.**
-
-A living *Arabidopsis thaliana* leaf positioned as the measurement interface in a double-slit experiment. Four conditions. Cryptochrome magnetic disruption as mechanistic control. Simultaneous electrophysiology as real-time coherence monitor.
-
-**The single falsifiable claim:**
-
-> A living plant at the detector position will produce a statistically different interference pattern than an inert detector, and that difference will correlate with the plant’s real-time electrophysiological coherence state.
-
-|Condition|Description                                   |
-|---------|----------------------------------------------|
-|1        |Inert photodetector baseline                  |
-|2        |Live *Arabidopsis* at detector plane          |
-|3        |Dead (heat-killed) *Arabidopsis*              |
-|4        |Live *Arabidopsis* + 50 μT magnetic disruption|
-
-**Pre-registered predictions:**
-
-- H1: Live plant V > photodetector (effect size >0.5)
-- H2: Correlation r > 0.55 only in live plant
-- H3: Magnetic disruption reduces V and increases L[X]
-- H4: Muon flux and mm-wave stable (<5% deviation)
-- H5: Substrate advantage holds for fluctuation strengths ≤ 0.12
-
------
-
-## What NKP Measures (Reporting Engine)
-
-The `nkp/` module is the engineering implementation of CBE — a modular, multi-day, multi-segment analysis pipeline for computing coherence, leakage, drift, and spatial stability across multimodal datasets.
-
-|Metric                      |Description                                            |
-|----------------------------|-------------------------------------------------------|
-|**Coherence C[X]**          |Cross-modal phase alignment across time and space      |
-|**Leakage L[X]**            |Loss of alignment and stability                        |
-|**Drift D**                 |Systematic degradation: phase, bias, structural        |
-|**Spatial coherence fields**|Where systems maintain or lose coherence geographically|
-
-### Modalities Supported
-
-RF · IMU · GPS · Acoustic · Optical/IR
-
-### System Architecture
-
-```
-Synthetic Generator
-        ↓
-    Validators
-        ↓
-Daily Module + Segment Module
-        ↓
-  Cross-Day Module
-        ↓
-    Atlas Module
-        ↓
-Final Report Assembler
-```
-
-### Quick Start
-
-```python
-from nkp.synthetic.generator import generate_stress_test
-from nkp.orchestrator import run_pipeline
-
-days = generate_stress_test()
-results = run_pipeline(days)
-print(results)
-```
-
-### Applications
-
-- Protocol 6 data processing (pre-registered analysis pipeline)
-- UAP coherence signature detection
-- Biological system stability analysis
-- Organoid-on-chip coherence monitoring
-- Field-coupled system diagnostics
-- Any multimodal system where coherence is a primary stability indicator
-
------
-
-## Repository Structure
-
-```
-nkp/
-    synthetic/        # Synthetic data generator
-    validators/       # Segment and schema validators
-    modules/          # Daily, segment, cross-day, atlas modules
-    assembler/        # Final report builder
-    orchestrator.py   # Top-level pipeline
-simulations/          # Coherence substrate simulations (CBE Layer 3)
-    nkp_substrate_sim.py
-    nkp_substrate_sim_qutip.py
-    nkp_fluctuation_sweep_qutip.py
-theory/               # Complete theoretical suite (all five layers)
-    NKP_Complete_Suite.txt
-docs/                 # Sphinx documentation
-.github/workflows/    # GitHub Actions CI/CD
-```
-
------
-
-## Theoretical Foundation
-
-The complete five-layer framework is documented in:
-
-- **Physics Meets Mind** — philosophical origin
-- **Newton Kepler Protocol** — AI safety and epistemic governance
-- **Coherence-Based Engineering** — formal mathematics (C[X], L[X], drift)
-- **QCIT Founding Statement** — quantum coherence interface theory
-- **Coherence as Substrate v3** — cosmological extension with simulation validation
-
-Coming Soon: Full suite in plain text: [`theory/NKP_Complete_Suite.txt`](theory/NKP_Complete_Suite.txt)
-
------
-
-## Documentation
-
-Full Sphinx documentation auto-built and deployed to GitHub Pages on every push to main.
-
------
-
-## Independent Replication
-
-Grok (xAI) has offered to independently reproduce the simulation results.  
-Key values to verify: `τ_sub=8.4127`, `Δ_sub=0.1248`, `final C[X] ~0.4733`, breaking point `~0.12`.
-
-To replicate: run `nkp_substrate_sim_qutip.py` and `nkp_fluctuation_sweep_qutip.py` with default parameters.
-
------
-
-## Contributing
-
-Contributions welcome. Please open an issue before submitting a pull request.
-
------
-
-## Contact
-
-**Michael Durkay**  
-mjdurkay@gmail.com | [@SpiritOfTruth64](https://x.com/SpiritOfTruth64)  
-Cleveland, Ohio · March 2026
-
-> *“We named it after the men who found order in apparent chaos — who trusted the universe was coherent before they proved it.”*
