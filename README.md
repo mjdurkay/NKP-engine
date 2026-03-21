@@ -144,6 +144,7 @@ No hard-coded if-statements. No magic numbers. The tanh form comes directly from
 -----
 
 ## Protocol 6 — The Falsifiable Experiment
+[Download the one-page summary: The Vacuum as Maximal Coherence State (PDF)](docs/Protocol_6.pdf)
 
 **Pre-registered March 17, 2026 on OSF.**  
 **Framework registration March 18, 2026 on OSF.**
