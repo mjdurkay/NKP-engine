@@ -10,6 +10,7 @@
 **Status:** Active Development  
 **OSF Registration:** March 18, 2026 (complete framework)  
 **OSF Pre-Registration:** March 17, 2026 (Protocol 6 experiment)
+- **[Document 6 – Protocol 6 Lab Manual](docs/Protocol6_Lab_Manual.md)**: g_C tuning checklist for hitting the 0.65–0.70 sweet spot with Arabidopsis or moss protonema (blue-light priming + environmental stabilization).
 
 -----
 
