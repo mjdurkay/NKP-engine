@@ -72,7 +72,7 @@ idx_metric = np.argmin(np.abs(x - r_test))
 print(f"At r ≈ {r_test:.1f}:  g00 ≈ {g00[idx_metric]:.6f},  gxx ≈ {gxx[idx_metric]:.6f}")
 print("→ Matches standard GR weak-field form g00 ≈ -(1 + 2Φ), gij ≈ (1 - 2Φ)δij")
 
-print("\n✅ Methodological Summary:")
+print("\nMethodological Summary:")
 print("• Action → overdamped gradient flow")
 print("• Φ = -δρ → correct attractive sign")
 print("• Poisson limit holds in weak-field regime")
