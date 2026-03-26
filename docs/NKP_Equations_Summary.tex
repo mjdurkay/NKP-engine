@@ -1,0 +1,76 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,geometry}
+\geometry{margin=1in}
+\title{Newton Kepler Protocol (NKP): Action, Emergent Metric, and Weak-Field Limit}
+\author{Michael Durkay \\ github.com/mjdurkay/NKP-engine}
+\date{March 26, 2026}
+
+\begin{document}
+
+\maketitle
+
+The Newton Kepler Protocol treats \textbf{coherence as the ontological substrate}. Matter appears as localized defects in a scalar coherence field \(\rho(\mathbf{x}) > 0\).
+
+\subsection{The NKP Action}
+The theory is defined by the action
+\begin{equation}
+S[\rho, g] = \int d^4x \, \sqrt{-g} \left[ \frac{M^2}{2} \frac{(\nabla \rho)^2}{\rho^2} - V(\rho) - J(\mathbf{x})\rho \right],
+\end{equation}
+where the kinetic term is equivalent to \(\frac{M^2}{2} (\nabla \ln \rho)^2\).
+
+The potential is
+\begin{equation}
+V(\rho) = \frac{\alpha_0}{2} (\rho - 1)^2 + \lambda \tanh(\beta (\rho - 1)),
+\end{equation}
+with effective stiffness
+\begin{equation}
+\alpha_{\rm eff}(\rho) = \alpha_0 \bigl[1 + \lambda \tanh(\beta |\ln \rho|)\bigr].
+\end{equation}
+
+The source term couples matter defects linearly:
+\begin{equation}
+L_{\rm src} = -J(\mathbf{x})\rho.
+\end{equation}
+
+\subsection{Emergent Metric}
+The kinetic term motivates the conformal rescaling
+\begin{equation}
+g_{\mu\nu}^{\rm eff} = \rho^{-2} \eta_{\mu\nu}.
+\end{equation}
+This makes the effective proper distance relational: \(d_{\rm eff} \propto 1/\rho\).
+
+\subsection{Weak-Field GR Limit}
+In the weak-field expansion \(\rho = 1 + \delta\rho\) (\(|\delta\rho| \ll 1\)), the metric becomes
+\[
+g_{00}^{\rm eff} \approx -(1 - 2\delta\rho), \quad g_{ij}^{\rm eff} \approx (1 - 2\delta\rho)\delta_{ij}.
+\]
+Identifying the Newtonian potential
+\begin{equation}
+\Phi = -\delta\rho
+\end{equation}
+recovers the standard GR weak-field form:
+\[
+g_{00} \approx -(1 + 2\Phi), \quad g_{ij} \approx (1 - 2\Phi)\delta_{ij}.
+\]
+
+The static weak-field limit of the field equation yields the Poisson equation
+\begin{equation}
+\nabla^2 \Phi = \frac{1}{\kappa} J = 4\pi G_{\rm eff} \, J, \qquad G_{\rm eff} = \frac{1}{4\pi \kappa}.
+\end{equation}
+
+This limit reproduces Newtonian gravity with the correct attractive sign, consistent with the sign-check geometry simulation.
+
+\subsection{Numerical Validation (Exhibits)}
+All steps are validated numerically in the repository:
+
+\begin{itemize}
+\item \texttt{sign\_check\_geometry.py} — Emergent attractive geometry (\(g_{rr} < g_{tt}\)).
+\item \texttt{galactic\_rotation\_v3\_successful.py} — Nonlinear inner boost + outer screening.
+\item \texttt{nkp\_1d\_action\_aligned.py} — 1D action-derived relaxation.
+\item \texttt{nkp\_galactic\_2d\_action\_aligned.py} — 2D galactic-scale dynamics.
+\item \texttt{nkp\_weakfield\_validation.py} — Full chain: action → \(\Phi = -\delta\rho\) → Poisson limit → emergent metric components.
+\end{itemize}
+
+The framework demonstrates a coherent path from a single scalar action to emergent Newtonian gravity, with nonlinear extensions for galactic phenomenology.
+
+\end{document}
