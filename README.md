@@ -51,6 +51,88 @@ Not consciousness. Not philosophy. A measurable physical quantity with a falsifi
 
 -----
 
+## NKP Coherence Substrate (V4) — Theoretical Framework
+
+*Michael Durkay · March 2026*
+
+### Abstract
+
+The NKP Coherence Substrate (V4) is a single scalar field theory in which dynamics and gravitational effects emerge variationally from a nonlinear action. In the low-frequency / massive sector the theory produces attractive Newtonian-like gravity with the correct sign and exhibits nonlinear modulation at galactic scales. All core results are demonstrated through open-source numerical simulations.
+
+> **V4 is strictly conformal:** light deflection at leading post-Newtonian order is zero. Extensions for high-frequency behavior are explored separately in V5.
+
+### 1. Methodology
+
+The framework is constructed from a single variational action for the coherence field ρ(x) > 0 (vacuum value ρ = 1). The equation of motion and its overdamped gradient-flow limit are derived. An emergent conformal metric arises naturally from the kinetic term. Weak-field attractive behavior is recovered numerically. Effective distance and gravitational attraction emerge directly from the action rather than being imposed by hand.
+
+### 2. Action of the NKP Coherence Substrate
+
+The substrate is governed by the action
+
+$$S[\rho, g] = \int d^4x \sqrt{-g} \left[ \frac{M^2}{2} \frac{(\nabla \rho)^2}{\rho^2} - V(\rho) - J(x)\rho \right]$$
+
+where the kinetic term is canonically equivalent to $\frac{M^2}{2} (\nabla \ln \rho)^2$.
+
+The saturating potential is
+
+$$V(\rho) = \frac{\alpha_0}{2} (\rho - 1)^2 + \lambda \tanh^\beta (\rho - 1)$$
+
+Matter defects couple linearly: $\mathcal{L}_\text{src} = -J(x)\rho$.
+
+### 3. Equation of Motion and Gradient Flow
+
+Varying the action yields the field equation. In the non-relativistic overdamped gradient-flow limit the dynamics simplify to
+
+$$\partial_t \rho = \kappa \nabla^2 \rho - \alpha_\text{eff}(\rho)(\rho - 1) + J$$
+
+where the effective stiffness (to leading order) is
+
+$$\alpha_\text{eff}(\Phi) \approx \alpha_0 \left[1 + \lambda \tanh(\beta |\Phi|)\right], \quad \Phi \approx -(\rho - 1)$$
+
+### 4. Emergent Metric
+
+The kinetic term induces the purely conformal metric
+
+$$g_{\mu\nu}^\text{eff} = \rho^{-2} \eta_{\mu\nu}$$
+
+This makes effective proper distance relational:
+
+$$d_\text{eff} = \int \frac{ds}{\rho(x)}$$
+
+### 5. Weak-Field Limit
+
+For small defects $\rho = 1 + \delta\rho$ with $|\delta\rho| \ll 1$, the metric takes the form
+
+$$g_{\mu\nu}^\text{eff} \approx (1 - 2\delta\rho), \eta_{\mu\nu}$$
+
+Numerical simulations show that an effective Newtonian potential $\Phi \approx -\delta\rho$ produces attractive gravity with the correct sign. The conformal rescaling applies the same factor to both temporal and spatial components.
+
+In the static limit, linearizing the field equation yields a Poisson-like equation that supports attractive Newtonian-like behavior in toy models and galactic-scale simulations. However, because the metric is purely conformal, it does **not** reproduce the standard GR weak-field form (which requires different scaling factors for $g_{00}$ and $g_{ij}$).
+
+Light deflection at leading post-Newtonian order is zero in pure V4, as the conformal factor cancels in the null condition for geodesics. High-frequency probes and possible extensions are explored separately.
+
+### 6. Limitations of V4
+
+V4 is a conformal scalar emergent-gravity model. It successfully produces attractive Newtonian-like gravity and galactic-scale nonlinearities, but:
+
+- It does **not** reproduce the standard GR weak-field metric (different time/space scaling).
+- Light deflection at leading order is **zero**.
+- Post-Newtonian tests and full geodesic behavior for light remain open.
+
+V5 explores whether high-frequency wave-packet behavior on V4 backgrounds reveals additional structure that can motivate a split scaling for light without violating the single-field ontology.
+
+### Notation
+
+|Symbol      |Meaning                      |
+|------------|-----------------------------|
+|ρ(x)        |Coherence field (vacuum = 1) |
+|Φ ≈ −(ρ − 1)|Effective Newtonian potential|
+|α_eff(Φ)    |Leading-order stiffness      |
+|J(x)        |Matter defect density        |
+|d_eff       |Effective relational distance|
+
+-----
+
 ## Simulations
 
 ### Core Substrate Simulations
@@ -190,6 +272,7 @@ The simulation suite is embedded in a rigorous mathematical framework:
 |`docs/poisson_derivation.md`             |Poisson-like equation from coherence defects    |
 |`docs/continuum_relativistic_analogue.md`|Curved-spacetime nonlocal field equation        |
 |`docs/NKP_Continuum_Framework_Notes.md`  |Master reference for continuum development      |
+|`docs/nkp_v4_coherence_substrate.md`     |V4 scalar field theory — full derivation        |
 
 ### The Derivation Chain
 
@@ -202,8 +285,8 @@ Lagrangian L = T - V
 + Continuum limit → nonlocal scalar field in curved spacetime
 ```
 
-**Current status:** Newtonian weak-field limit confirmed (2D toy model — all test particles move inward, correct sign).  
-**Remaining:** T_μν derivation, Einstein equations, Lorentzian signature in discrete model.
+**Current status:** Newtonian weak-field limit confirmed (2D toy model — all test particles move inward, correct sign). V4 metric is strictly conformal — does not reproduce standard GR weak-field form.  
+**Remaining:** T_μν derivation, Einstein equations, Lorentzian signature in discrete model, light deflection (V5).
 
 -----
 
@@ -260,7 +343,7 @@ simulations/          # 12 simulation files
     emergent_newtonian_2d_toy.py
     lorentz_invariance_moving_defect.py
     frame_dragging_whirlpool.py
-docs/                 # 7 theoretical development documents
+docs/                 # 8 theoretical development documents
     variational_embedding.md
     onsager_machlup_appendix.md
     variational_summary.md
@@ -268,6 +351,7 @@ docs/                 # 7 theoretical development documents
     poisson_derivation.md
     continuum_relativistic_analogue.md
     NKP_Continuum_Framework_Notes.md
+    nkp_v4_coherence_substrate.md
 nkp/                  # CBE reporting engine
 ```
 
