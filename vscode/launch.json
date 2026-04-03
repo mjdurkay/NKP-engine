@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run NKP Pipeline",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/simulations/run_pipeline.py",
+            "console": "integratedTerminal"
+        }
+    ]
+}
