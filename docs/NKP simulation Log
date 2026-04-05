@@ -1,0 +1,397 @@
+# NKP Simulation Log — H2 3D Superstructure: Bang Event and Vacuum Settling
+
+**Document ID:** NKP-SIM-006
+**Date:** 2026-04-04
+**Author:** Michael Durkay
+**Framework Layer:** Layer III — Scalar Field Dynamics
+**Status:** Results confirmed. Lambda scan in progress.
+
+-----
+
+## 1. Summary
+
+This document records the results of the H2 3D superstructure simulation,
+the first NKP run to produce a clean bang event, post-bang ringdown, and
+dynamically self-selected vacuum state. The simulation was not tuned to
+produce these results. They emerged from the coupled field dynamics of the
+three-field system (α, σ, ν) with a coherence current field J.
+
+Key results:
+
+- Bang detected at step 2890, triggered by Survivor 3 (not the highest-stress site)
+- Post-bang J_max growth from 0.08 → ~1.01 over ~120,000 steps
+- Vacuum settled to J_vac = 0.4019, held for ~380,000 steps without drift
+- Ringdown fit: pure exponential, λ = 8.2 × 10⁻⁶, τ ≈ 1.22 × 10⁵ steps
+- Filament network confirmed: ⟨|ν|⟩ = 1.0067 between remnant sites
+- Four non-bang survivors retained as stable high-stress vortex sites
+
+-----
+
+## 2. Simulation Parameters
+
+```
+Grid:          N = 48,  L = 40.0,  dx = L/N
+Timestep:      dt = 0.0007
+Phase 1 steps: 20,000
+Phase 2 steps: 500,000
+Noise level:   0.004
+
+Mexican hat potential:
+  mu2 = 0.5,  lambda = 0.08
+  sigma_min = sqrt(mu2 / (2 * lambda)) = 1.7678
+
+Field parameters:
+  kappa_a = 1.2,   xi_a = 1.29,   alpha_restore = kappa_a / xi_a^2
+  kappa_s = 0.8,   kappa_n = 0.6,  gamma_n = 0.05
+  g_an    = 0.15,  g_sn    = 0.10, g_sat   = 0.08
+  g_jn    = 0.12,  j_decay = 0.82, j_alpha = 0.38
+  g_as    = 0.35,  g_sa    = 0.20
+  stress_threshold = xi_a = 1.29
+  dim_gain = 3.0,  asym_gain = 1.0
+
+Bang detection thresholds:
+  J_bang_threshold  = 0.08
+  nu_sat_threshold  = 0.08
+  stress_bang_threshold = 0.45
+  min_bang_step     = 100
+
+Superstructure:
+  K = 5 top survivors tracked
+  track_interval    = 5,000 steps
+  snapshot_interval = 25,000 steps
+```
+
+-----
+
+## 3. Field Equations
+
+Evolution equations for the three-field system:
+
+```
+dα/dt  = κ_a ∇²α  −  α_restore (α − 1)  +  g_sa (|σ| − σ_min)  +  g_an ν
+
+dσ/dt  = κ_s ∇²σ  +  pot_term  +  g_local (α − 1) σ/|σ|  +  g_sn ν σ/|σ|
+
+dν/dt  = κ_n ∇²ν  −  γ_n ν  −  g_sat ν³
+         +  dim_gain · g_an (α − 1)
+         +  dim_gain · g_sn (|σ| − σ_min)
+
+dJ/dt  = −j_decay · J  +  j_alpha (α − 1) J  +  dim_gain · g_jn ν²
+```
+
+where:
+
+```
+pot_term  = −(dV/d|σ|) · σ/|σ|
+dV/d|σ|   = −2 μ² |σ|  +  4 λ |σ|³
+g_local   = g_as · exp(−local_stress / stress_threshold)
+local_stress = |α − 1| + ||σ| − σ_min|
+```
+
+-----
+
+## 4. Phase 1 Results — σ Ordering
+
+Phase 1 runs for 20,000 steps with ν and J inactive.
+σ condenses from noise onto the Mexican hat minimum.
+
+|Step |⟨|σ|⟩ |
+|----:|-----:|
+|0    |0.3392|
+|2000 |0.0714|
+|4000 |0.1200|
+|6000 |0.2801|
+|8000 |0.6693|
+|10000|1.1768|
+|12000|1.4685|
+|14000|1.5705|
+|16000|1.6100|
+|18000|1.6321|
+
+The dip at step 2000 followed by monotonic rise is characteristic of
+phase separation: initial noise collapses before domain walls form and
+the field finds the minimum. Final ⟨|σ|⟩ ≈ 1.63, approaching σ_min = 1.7678.
+
+Top-K stress survivors at Phase 1 completion:
+
+|Survivor|Grid site (i,j,k)|Stress|
+|-------:|-----------------|-----:|
+|0       |(2,  28, 45)     |1.9300|
+|1       |(46, 16,  2)     |1.9251|
+|2       |(44,  4, 23)     |1.9092|
+|3       |(38,  9, 47)     |1.9073|
+|4       |(38,  9, 19)     |1.9070|
+
+Note: Survivors 3 and 4 share the same (i,j) coordinates at different
+k-slices, indicating a coherent stress column in the z-direction.
+
+-----
+
+## 5. Phase 2 Results — Bang Event and Ringdown
+
+### 5.1 Bang Detection
+
+```
+Bang detected:  step 2890
+Winner:         Survivor 3  at (38, 9, 47)
+J at bang:      > J_bang_threshold = 0.08
+nu_std at bang: > nu_sat_threshold = 0.08
+```
+
+**Directional selection mechanism:**
+Survivor 3 was not the highest-stress site (Survivor 0 had stress 1.9300
+vs Survivor 3 at 1.9073). The winner was selected by coupling structure,
+not by initial stress ranking. At the moment of threshold crossing, Survivor 3
+was most favorably positioned relative to the ν field gradient. Directionality
+emerged from local dynamics, not from initial conditions.
+
+This is consistent with the NKP theoretical prediction: directionality
+is implied only after an excitation emerges, not before.
+
+### 5.2 Post-Bang Evolution
+
+Selected J_max and ν_std readings from Phase 2 log:
+
+|Step  |J_max |ν_std |Phase           |
+|-----:|-----:|-----:|----------------|
+|0     |0.0000|0.0001|pre-bang        |
+|2000  |0.0367|0.0815|approaching bang|
+|2890  |—     |—     |**BANG**        |
+|4000  |0.1508|0.1406|post-bang growth|
+|10000 |0.5832|0.2467|expansion       |
+|20000 |0.8714|0.2768|expansion       |
+|24000 |0.9464|0.2589|approaching peak|
+|70000 |1.0097|0.0967|peak region     |
+|82000 |1.0464|0.0862|peak            |
+|120000|1.0106|0.0388|transition      |
+|122000|0.8974|0.0319|**sharp drop**  |
+|130000|0.5370|0.0145|ringdown        |
+|150000|0.4196|0.0030|settling        |
+|174000|0.4054|0.0007|vacuum approach |
+|200000|0.4029|0.0003|vacuum          |
+|300000|0.4019|0.0002|**vacuum fixed**|
+|500000|0.4019|0.0002|vacuum stable   |
+
+### 5.3 Anatomy of the Bang Event
+
+Three distinct dynamical regimes are visible:
+
+**Regime 0 — Pre-bang (steps 0–2890):**
+J rises from zero. ν_std climbs from noise. σ is already ordered from
+Phase 1. The substrate is in a pre-coherent state: stress sites exist,
+filaments are forming, but no threshold has been crossed. No directionality
+exists at this stage.
+
+**Regime 1 — Post-bang expansion (steps 2890–~120000):**
+J_max grows monotonically from 0.08 to ~1.01. ν_std peaks near 0.28 at
+approximately step 20,000, then declines as the coherence window expands
+and stabilizes. This regime corresponds to the coherence window igniting
+and propagating outward from the bang site.
+
+**Regime 2 — Ringdown and vacuum settling (steps ~120000–174000):**
+J_max drops sharply from its peak value. ν_std collapses toward zero.
+The system drains excess coherence and converges to a stable fixed point.
+This regime is fit by a pure exponential.
+
+**Regime 3 — Stable vacuum (steps ~174000–500000):**
+J_max = 0.4019 ± 0.0001, held for approximately 380,000 steps with no
+measurable drift. ν_std = 0.0002, consistent with residual noise floor only.
+
+-----
+
+## 6. Ringdown Fit
+
+Fit performed on full post-bang data by Copilot (cold reviewer).
+Fit target: J_max(t) − J_vac = A · exp(−λt)
+
+Three models tested:
+
+|Model      |Parameters                            |Fit quality|
+|-----------|--------------------------------------|-----------|
+|Exponential|A = 0.639,  λ = 8.2 × 10⁻⁶            |Best fit   |
+|Power law  |A = 6.13,   β = 0.31                  |Poor       |
+|Hybrid     |A = 3.82e-8, β = −1.7, λ = 3.36 × 10⁻⁵|Collapsed  |
+
+**Result: pure exponential.**
+
+Derived timescale:
+
+```
+τ = 1/λ = 1/(8.2 × 10⁻⁶) ≈ 1.22 × 10⁵ steps
+```
+
+This matches the observed transition point (~step 120,000–174,000)
+to within measurement precision of the 2,000-step log interval.
+
+### 6.1 Physical Interpretation of λ
+
+The J field equation near the fixed point reduces to:
+
+```
+dJ/dt ≈ (−j_decay + j_alpha · ⟨α−1⟩_vac) · J
+```
+
+With j_decay = 0.82, j_alpha = 0.38, and dt = 0.0007:
+
+```
+λ_bare = j_decay · dt = 0.82 × 0.0007 = 5.74 × 10⁻⁴ per step
+```
+
+Observed: λ = 8.2 × 10⁻⁶ per step.
+
+**λ_observed is ~70× slower than λ_bare.** The vacuum is not governed
+by j_decay alone. The ν–J and α–J couplings are actively stabilizing J
+near the fixed point, producing a much slower effective relaxation than
+the bare parameter predicts.
+
+This is evidence of **coupling-stabilized vacuum**: J_vac = 0.4019 is
+not set by any single parameter. It is a fixed point of the coupled
+three-field system.
+
+-----
+
+## 7. Superstructure Diagnostics
+
+Computed from remnant tracking at 5,000-step intervals across full Phase 2 run.
+
+```
+Mean pairwise distance between survivors:   22.091 units
+Mean minimum distance between survivors:     8.076 units
+Mean filament strength ⟨|ν|⟩:               1.0067
+Average close pairs (separation < 12 units): 2.44
+```
+
+### 7.1 Non-Bang Survivors as Black Hole Analogs
+
+Survivors 0, 1, 2, and 4 did not produce bang events. They maintained
+high stress throughout the full 500,000-step run. These sites represent
+stable sub-threshold vortex structures:
+
+- High local stress maintained indefinitely
+- Connected to neighboring sites by ν filaments (⟨|ν|⟩ ≈ 1.0067)
+- No collapse, no divergence
+- Stress held at finite values throughout
+
+This is the substrate analog of a black hole: not an infinite curvature
+singularity, but a **coherence deficit site** around which the surrounding
+substrate has organized. The event horizon analog is not geometrically
+defined — it is the boundary where the coherence field transitions from
+deficit to surplus. Spatial field profiles around these sites have not
+yet been extracted (GPU session ended before inline diagnostics could run).
+This is a priority for the next simulation session.
+
+### 7.2 Filament Network
+
+Mean filament strength ⟨|ν|⟩ = 1.0067 between top-K stress sites.
+The ν field is not flat between remnant locations. It carries real flux
+connecting them. This is a large-scale structure precursor: not imposed,
+not tuned, emergent from the dynamics.
+
+If the filament network were driving the ringdown, a power-law tail would
+be expected in the J_max decay (long-range energy transfer through the
+network). The pure exponential fit rules this out: coherence drains
+locally, not through the filament network. The network is a structural
+consequence of the field ordering, not a dissipation channel.
+
+-----
+
+## 8. Open Questions and Next Steps
+
+### 8.1 Lambda scan (in progress)
+
+Vary j_decay across [0.50, 0.60, 0.70, 0.82, 0.90, 1.00, 1.10, 1.20]
+holding all other parameters fixed. For each value, extract:
+
+- λ_fit from Regime 2 exponential
+- J_vac from late-time plateau
+
+**Prediction:** If J_vac remains near 0.4019 across the scan, the vacuum
+is coupling-stabilized and independent of j_decay. If λ does not scale
+linearly with j_decay, the effective relaxation rate is set by the
+coupled system, not by the bare parameter.
+
+j_decay = 0.50 scan was initiated before GPU session ended.
+Bang detected at step 2703 (cf. step 2890 at j_decay = 0.82).
+
+### 8.2 Spatial field profiles around non-bang survivors
+
+Extract radial profiles of ν, J, α, and stress around each non-bang
+survivor site from Phase 2 field state. Look for:
+
+- Suppressed core in J or ν
+- Elevated ring structure at characteristic radius r*
+- Asymmetric stress gradients indicating preferred infall direction
+
+Script prepared (nkp_inline_diagnostics.py). Run in next GPU session.
+
+### 8.3 Regime 2 isolated fit
+
+Refit λ using only Regime 2 data (post-peak decay, J_max − J_vac > 0).
+Copilot’s fit included Regime 1 (growth phase), which is not a decay
+process. The isolated Regime 2 λ is expected to be sharper and will
+give a more precise τ estimate.
+
+### 8.4 Physical interpretation of J_vac = 0.4019
+
+What sets this value? Candidate mechanisms:
+
+- Fixed point of the ν–J–α coupling at late times
+- Ratio of source term (dim_gain · g_jn · ν²) to drain term (j_decay · J)
+  evaluated at the noise floor of ν
+- An eigenvalue of the linearized field equations around the ordered state
+
+Analytic estimate to be attempted in NKP-THEORY-007.
+
+-----
+
+## 9. Theoretical Significance
+
+### 9.1 Vacuum without fine-tuning
+
+The substrate finds J_vac = 0.4019 dynamically. No parameter was set
+to produce this value. It is a consequence of the coupled field equations
+reaching a fixed point after a bang event. This is a direct demonstration
+of the NKP claim that vacuum structure is a coherence property of the
+substrate, not a background assumption.
+
+The cosmological constant problem arises in GR and QFT because neither
+framework has a mechanism to select a vacuum energy from dynamics. This
+simulation demonstrates that a substrate model can produce a stable,
+finite vacuum value without tuning.
+
+### 9.2 Directionality from excitation
+
+The winner of the bang competition (Survivor 3) was not selected by
+initial conditions. It was selected by coupling structure at the moment
+of threshold crossing. Before the bang, the substrate had no preferred
+direction. The bang event created one. This is consistent with the NKP
+theoretical claim: directionality is implied but only after an excitation
+emerges.
+
+### 9.3 Finite post-bang invariants
+
+J_max, ν_std, and field stress all remain finite throughout the run,
+including at and after the bang event. No divergence occurs. The bang
+is a phase transition in window structure, not a singularity. This is
+consistent with NKP Prediction 1: in regimes where GR predicts curvature
+singularities, the substrate framework predicts finite coherence measures
+and a transition in window structure.
+
+-----
+
+## 10. Derivation Chain
+
+|Step|Document       |Result                                    |
+|---:|---------------|------------------------------------------|
+|1   |NKP-THEORY-001 |Infinite substrate, no boundary conditions|
+|2   |NKP-THEORY-002 |Coherence functional C[ν], window W       |
+|3   |NKP-THEORY-003 |Local flatness theorem (axiomatic form)   |
+|4   |NKP-THEORY-004 |Excitation → directionality sequence      |
+|5   |NKP-SIM-001–005|2D vortex, topological charge, 3D ring    |
+|6   |**NKP-SIM-006**|**Bang event, vacuum settling, ringdown** |
+|7   |NKP-SIM-006b   |Lambda scan (in progress)                 |
+|8   |NKP-THEORY-007 |Analytic estimate of J_vac fixed point    |
+
+-----
+
+*Newton Kepler Protocol — github.com/mjdurkay/nkp-engine*
