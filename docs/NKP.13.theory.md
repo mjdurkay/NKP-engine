@@ -1,4 +1,4 @@
-# NKP Theory — The χ Framework and the Deflection Prefactor
+# NKP Theory 013 — The χ Framework and the Deflection Prefactor
 
 **Document ID:** NKP-THEORY-013
 **Date:** 2026-04-06
