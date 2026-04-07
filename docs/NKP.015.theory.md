@@ -1,6 +1,5 @@
-Good. Let’s write that sketch now — cleanly and honestly, as the pivot section that closes the kernel work and opens the effective metric work.
 
-NKP-THEORY-015 — Section 8: The Pivot
+## NKP-THEORY-015 — Section 8: The Pivot
 
 Sections N1-N5 established microscopic viability:
 
